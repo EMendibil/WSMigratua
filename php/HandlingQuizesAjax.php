@@ -45,8 +45,8 @@
                 <label for="frmeposta">Eposta (*):</label>
                 <?php
                 $eposta = "";
-                if (isset($_GET['eposta'])) {
-                    $eposta = $_GET['eposta'];
+                if (isset($_SESSION['eposta'])) {
+                    $eposta = $_SESSION['eposta'];
                     echo '<input type="text" id="frmeposta" name="frmeposta" value="'.$eposta.'" readonly="readonly">';
                 } else {
                     echo '<input type="text" id="frmeposta" name="frmeposta" placeholder="EHU eposta">';
