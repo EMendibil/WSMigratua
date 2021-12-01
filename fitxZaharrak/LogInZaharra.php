@@ -33,27 +33,17 @@
                 $datuak = $_POST;
                 global $zerbitzaria, $erabiltzailea, $gakoa, $db;
                 
-                try {
-                    $dsn = "mysql:host=localhost;dbname=$dbname";
-                    $dbh = new PDO($dsn, $user, $password);
-                    } catch (PDOException $e){
-                    alert("Errore bat gertatu da DB-ra konektatzerakoan: " . echo $e->getMessage());
-                    }
+                $nireSQLI = new mysqli($zerbitzaria, $erabiltzailea, $gakoa, $db);
+
+                if($nireSQLI->connect_error) {
+                    die("DB-ra konexio bat egitean errore bat egon da: " . $nireSQLI->connect_error);
+                }
 
 
 
                 $ema = $nireSQLI->query("SELECT eposta, pasahitza, irudia_dir, mota FROM Erabiltzaileak WHERE eposta = '".$_POST["eposta"]."' AND blokeatuta = 0");
 
-
-                $stmt = $dbh->prepare("SELECT eposta, pasahitza, irudia_dir, mota FROM Erabiltzaileak WHERE eposta = ? AND blokeatuta = 0");
-
-                $eposta = $_POST["eposta"];
-                $stmt->bindParam(1, $eposta);
-
-                $stmt->execute();
-                $ema=$stmt->fetchAll(PDO::FETCH_OBJ);
-
-                if (($tabladatuak = $ema) != null) {
+                if (($tabladatuak = $ema->fetch_row()) != null) {
                     if ($datuak["eposta"] == $tabladatuak[0] && hash_equals($tabladatuak[1], crypt($datuak["pasahitza"], $tabladatuak[1]))) {
                         include 'IncreaseGlobalCounter.php';
                         $_SESSION["kautotua"]= "BAI";
@@ -75,7 +65,6 @@
                     echo '<p style="color: red"> Erabiltzailea ez da existitzen.</p>';
                 }
                 
-                $dbh = null;
 
             }
             ?>
