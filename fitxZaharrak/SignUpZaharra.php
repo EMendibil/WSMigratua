@@ -95,13 +95,12 @@ if (isset($_POST['eposta'])) {
     }
 
     global $zerbitzaria, $erabiltzailea, $gakoa, $db;
-    
-    try {
-        $dsn = "mysql:host=localhost;dbname=$dbname";
-        $dbh = new PDO($dsn, $user, $password);
-        } catch (PDOException $e){
-        alert("Errore bat gertatu da DB-ra konektatzerakoan: " . echo $e->getMessage());
-        }
+    $nireSQLI = new mysqli($zerbitzaria, $erabiltzailea, $gakoa, $db);
+
+    if($nireSQLI->connect_error) {
+        echo "<script> alert('DB-ra konexio bat egitean errore bat egon da. Berriro saiatu.')";
+        return;
+    }
 
     $irudia = "";
     if ($_FILES["irudia"]["tmp_name"] != "") {
@@ -111,29 +110,14 @@ if (isset($_POST['eposta'])) {
 
     $encrypted_pwd = crypt($_POST["pasahitza"]);
 
-    $stmt = $dbh->prepare("INSERT INTO Erabiltzaileak(eposta, mota, deitura, pasahitza, irudia, irudia_dir) 
-                            VALUES (?, ?, ?, ?, ?, ?)");
+    $sqlInsertQuestion = "INSERT INTO Erabiltzaileak(eposta, mota, deitura, pasahitza, irudia, irudia_dir) 
+                            VALUES ('$_POST[eposta]', '$_POST[erabiltzailemota]', '$_POST[deitura]', '$encrypted_pwd', '$irudia', '$dir')";
 
-    $eposta = $_POST["eposta"];
-    $mota = $_POST["erabiltzailemota"]
-    $deitura = $_POST["deitura"]
-    $pasahitza = $encrypted_pwd
-    $irudia = $irudia
-    $irudia_dir = $dir
-
-    $stmt->bindParam(1, $eposta);
-    $stmt->bindParam(2, $mota);
-    $stmt->bindParam(3, $deitura);
-    $stmt->bindParam(4, $pasahitza;
-    $stmt->bindParam(5, $irudia);
-    $stmt->bindParam(6, $dir); 
-
-
-    if (!$stmt->execute();) {
-        echo "<script>alert('Errorea datu-basean. Mesedez, saiatu berriro')</script>";
+    if (!$nireSQLI->query($sqlInsertQuestion)) {
+        $mezua = str_replace("'", "\'", $nireSQLI->error);
+        echo "<script>alert('Errorea datu-basean: $mezua')</script>";
         return;
     }
-    $dbh = null;
     header("location: Layout.php");
 }
 ?>
