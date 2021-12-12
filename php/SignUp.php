@@ -22,11 +22,11 @@
         else if ($datuak["pasahitza"] != $datuak["pasahitzaErr"]){
             return 'Bi pasahitzak ez dira berdinak';
         }
-        $result = include "ClientVerifyEnrollment.php";
-        return $result;    
+        //$result = include "ClientVerifyEnrollment.php";
+        return $result;
     }
     ?>
-    
+
 </head>
 <body>
     <?php include '../php/Menus.php' ?>
@@ -95,12 +95,13 @@ if (isset($_POST['eposta'])) {
     }
 
     global $zerbitzaria, $erabiltzailea, $gakoa, $db;
-    
+
     try {
-        $dsn = "mysql:host=localhost;dbname=$dbname";
-        $dbh = new PDO($dsn, $user, $password);
+        $dsn = "mysql:host=localhost;dbname=$db";
+        $dbh = new PDO($dsn, $erabiltzailea, $gakoa);
         } catch (PDOException $e){
-        alert("Errore bat gertatu da DB-ra konektatzerakoan: " . echo $e->getMessage());
+        alert("Errore bat gertatu da DB-ra konektatzerakoan: ");
+        //  . echo $e->getMessage()
         }
 
     $irudia = "";
@@ -111,25 +112,25 @@ if (isset($_POST['eposta'])) {
 
     $encrypted_pwd = crypt($_POST["pasahitza"]);
 
-    $stmt = $dbh->prepare("INSERT INTO Erabiltzaileak(eposta, mota, deitura, pasahitza, irudia, irudia_dir) 
+    $stmt = $dbh->prepare("INSERT INTO Erabiltzaileak(eposta, mota, deitura, pasahitza, irudia, irudia_dir)
                             VALUES (?, ?, ?, ?, ?, ?)");
 
     $eposta = $_POST["eposta"];
-    $mota = $_POST["erabiltzailemota"]
-    $deitura = $_POST["deitura"]
-    $pasahitza = $encrypted_pwd
-    $irudia = $irudia
-    $irudia_dir = $dir
+    $mota = $_POST["erabiltzailemota"];
+    $deitura = $_POST["deitura"];
+    $pasahitza = $encrypted_pwd;
+    $irudia = $irudia;
+    $irudia_dir = $dir;
 
     $stmt->bindParam(1, $eposta);
     $stmt->bindParam(2, $mota);
     $stmt->bindParam(3, $deitura);
-    $stmt->bindParam(4, $pasahitza;
+    $stmt->bindParam(4, $pasahitza);
     $stmt->bindParam(5, $irudia);
-    $stmt->bindParam(6, $dir); 
+    $stmt->bindParam(6, $dir);
 
 
-    if (!$stmt->execute();) {
+    if (!$stmt->execute()) {
         echo "<script>alert('Errorea datu-basean. Mesedez, saiatu berriro')</script>";
         return;
     }
