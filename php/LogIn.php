@@ -27,6 +27,7 @@
                 <!-- Galdera igorri -->
                 <input type="submit" name="submit" id="submit" value="Logeatu"><br>
             </form>
+            <a id="pasBerrezarri" href="../php/PassBerrezarpena.php">Pasahitza ahaztu duzu?</a>
             <?php
 
             if (!empty($_POST)){

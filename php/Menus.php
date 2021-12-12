@@ -4,6 +4,7 @@
     session_start();
     if (isset($_SESSION['kautotua']) &&  ($_SESSION['kautotua']) == "BAI") {
         echo '<span class="right"><a href="LogOut.php">Logout</a></span> &nbsp;';
+        echo '<span class="right"><a href="PassBerrezarpena.php">Pasahitza berrezarri</a></span> &nbsp;';
         echo $_SESSION['eposta'].'&nbsp;';
 
         if (isset($_SESSION['irudia']) && file_exists($_SESSION['irudia'])) {
@@ -15,6 +16,7 @@
     } else {
         echo '<span class="right"><a href="SignUp.php">Erregistratu</a></span> &nbsp;';
         echo '<span class="right"><a href="LogIn.php">Login</a></span> &nbsp;';
+        echo '<span class="right"><a href="PassBerrezarpena.php">Pasahitza berrezarri</a></span> &nbsp;';
         echo 'Anonimoa &nbsp;';
         echo '<img src="../images/erabiltzaile_anonimoa.png" height=50 width=50"/>';
     }
