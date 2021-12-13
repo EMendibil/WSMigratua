@@ -19,6 +19,7 @@
         }
         $GLOBALS['kodea'] = kodeaSortu(8);
         $GLOBALS['epostaKod'] = "";
+        
         function kodeaBidali(){
           $email = $_POST['eposta'];
             $mezua = "Hemen duzu quiz aplikazioko zure kontuaren pasahitza berrezartzeko beharrezko kodea: ";
@@ -27,7 +28,7 @@
             $mezua .= $GLOBALS['kodea'];
             $mezua = wordwrap($mezua,70);
             mail($email,"Pasahitzaren berrezarpena",$mezua);
-
+            echo '<p style="color: blue"> Kodea bidali da.</p>';
           }
 
 
@@ -89,12 +90,15 @@
               if (isset($_POST['pasahitza'], $_POST['pasahitzaB'], $_POST['kodea'])){
                 if($_POST['kodea'] == $GLOBALS['kodea'] && $eposta == $GLOBALS['epostaKod']){
                   if($_POST['pasahitza'] == $_POST['pasahitzaB']){
-                    if($_POST['pasahitza'] != $ema['pasahitza']){
+                    if(crypt($_POST['pasahitza']) != $ema['pasahitza']){
                       $stmt = $dbh->prepare("UPDATE Erabiltzaileak SET pasahitza = ? WHERE eposta = ?");
                       $pasahitza = $_POST["pasahitza"];
                       $stmt->bindParam(1, $eposta);
                       $stmt->bindParam(2, $pasahitza);
                       $stmt->execute();
+                      $dbh = null;
+                      echo '<script> alert("Pasahitza ongi berrezarri da.") </script>';
+                      header("location: Layout.php");
                     }
                     else{
                       echo '<p style="color: red"> Pasahitz berria ezin da zaharraren berdina izan.</p>';
@@ -108,6 +112,7 @@
                   echo '<p style="color: red"> Idatzitako kodea ez da zuzena.</p>';
                 }
               }
+              
             ?>
         </div>
     </section>
