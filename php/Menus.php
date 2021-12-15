@@ -16,6 +16,7 @@
     } else {
         echo '<span class="right"><a href="SignUp.php">Erregistratu</a></span> &nbsp;';
         echo '<span class="right"><a href="LogIn.php">Login</a></span> &nbsp;';
+        echo '<span class="right"><a href="LoginSoziala.php">Login Soziala</a></span> &nbsp;';
         echo '<span class="right"><a href="PassBerrezarpena.php">Pasahitza berrezarri</a></span> &nbsp;';
         echo 'Anonimoa &nbsp;';
         echo '<img src="../images/erabiltzaile_anonimoa.png" height=50 width=50"/>';

@@ -10,7 +10,7 @@
         <div>
             <?php
             function eremuakKonprobatu($datuak) {
-                if (!preg_match("/^(([a-zA-Z]+[0-9]{3}@ikasle\.ehu\.(eus|es))|([a-zA-Z]+\.[a-zA-Z]+@ehu\.(eus|es)|[a-zA-Z]+@ehu\.(eus|es)))$/i", $datuak["frmeposta"])) {
+                if (!preg_match("/^(([a-zA-Z]+[0-9]{3}@ikasle\.ehu\.(eus|es))|([a-zA-Z]+@gmail\.(eus|es|com))|([a-zA-Z]+\.[a-zA-Z]+@ehu\.(eus|es)|[a-zA-Z]+@ehu\.(eus|es)))$/i", $datuak["frmeposta"])) {
                     return 'Eposta okerra';
                 } else if (strlen($datuak["frmgalderatxt"]) < 10 || !ezHutsaVal($datuak["frmgalderatxt"])) {
                     return 'Galdera testua oso motza';
@@ -64,7 +64,7 @@
                     $parametroak = "?eposta=".$_GET['eposta'];
                     $parametroak = $parametroak."&irudia=".$_GET['irudia'];
                 }
-                return "<p>Galdera ondo gorde da DB-n, XML-n eta JSON-en</p> 
+                return "<p>Galdera ondo gorde da DB-n, XML-n eta JSON-en</p>
                         <p><a href='ShowQuestionsWithImage.php".$parametroak."'>Galdera guztiak ikusi</a></p>
                         <p><a href='QuestionFormWithImage.php".$parametroak."'>Beste galdera bat gehitu</a></p>";
             }
@@ -84,8 +84,8 @@
                     $irudia = addslashes(file_get_contents($irudiaIzen));
                 }
 
-                $sqlInsertQuestion = "INSERT INTO Questions(eposta, galdera, eZuzen, eOker1, eOker2, eOker3, zailtasuna, gaia, argazkia) 
-                VALUES ('$aldagaiak[frmeposta]', '$aldagaiak[frmgalderatxt]', '$aldagaiak[frmerantzunzuzena]', '$aldagaiak[frmerantzunokerra1]', '$aldagaiak[frmerantzunokerra2]', 
+                $sqlInsertQuestion = "INSERT INTO Questions(eposta, galdera, eZuzen, eOker1, eOker2, eOker3, zailtasuna, gaia, argazkia)
+                VALUES ('$aldagaiak[frmeposta]', '$aldagaiak[frmgalderatxt]', '$aldagaiak[frmerantzunzuzena]', '$aldagaiak[frmerantzunokerra1]', '$aldagaiak[frmerantzunokerra2]',
                         '$aldagaiak[frmerantzunokerra3]', '$aldagaiak[frmzailtasuna]', '$aldagaiak[frmgaiarloa]', '$irudia')";
 
                 if (!$nireSQLI->query($sqlInsertQuestion)) {
