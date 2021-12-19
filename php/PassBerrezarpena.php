@@ -102,7 +102,7 @@
                       unset ($_SESSION['epostaKod'] );
 
                       echo '<script> alert("Pasahitza ongi berrezarri da.") </script>';
-                      //header("location: Layout.php");
+                      header("location: Layout.php");
                     }
                     else{
                       echo '<p style="color: red"> Pasahitz berria ezin da zaharraren berdina izan.</p>';
