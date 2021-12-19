@@ -87,8 +87,6 @@
               }
 
               if (isset($_POST['pasahitza'], $_POST['pasahitzaB'], $_POST['kodea'])){
-                echo '<script> alert("Kodea '. $_SESSION['kodea'] .' da") </script>';
-                echo '<script> alert("Kodea '. $_SESSION['epostaKod'] .' da") </script>';
                 if($_POST['kodea'] == $_SESSION['kodea']){
                   if($_POST['pasahitza'] == $_POST['pasahitzaB']){
                     if(crypt($_POST['pasahitza']) != $ema['pasahitza'] && strlen($datuak["pasahitza"] < 8)) {
