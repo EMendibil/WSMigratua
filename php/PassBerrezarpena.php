@@ -8,6 +8,7 @@
 <body>
     <?php include '../php/Menus.php' ?>
     <?php
+
         function kodeaSortu($luzera) {
           $karaktereak = '0123456789abcdefghijklmnopqrs092u3tuvwxyzaskdhfhf9882323ABCDEFGHIJKLMNksadf9044OPQRSTUVWXYZ';
           $karaktereKop = strlen($karaktereak);
@@ -17,15 +18,12 @@
           }
           return $kodea;
         }
-        $GLOBALS['kodea'] = kodeaSortu(8);
-        $GLOBALS['epostaKod'] = "";
-        
+
         function kodeaBidali(){
-          $email = $_POST['eposta'];
             $mezua = "Hemen duzu quiz aplikazioko zure kontuaren pasahitza berrezartzeko beharrezko kodea: ";
-            $GLOBALS['kodea'] = kodeaSortu(8);
-            $GLOBALS['epostaKod'] = $email;
-            $mezua .= $GLOBALS['kodea'];
+            $_SESSION['kodea'] = kodeaSortu(8);
+            $_SESSION['epostaKod'] = $_POST['eposta'];
+            $mezua .= $_SESSION['kodea'];
             $mezua = wordwrap($mezua,70);
             mail($email,"Pasahitzaren berrezarpena",$mezua);
             echo '<p style="color: blue"> Kodea bidali da.</p>';
@@ -87,18 +85,26 @@
                     echo '<p style="color: red"> Erabiltzailea ez da existitzen.</p>';
                   }
               }
+
               if (isset($_POST['pasahitza'], $_POST['pasahitzaB'], $_POST['kodea'])){
-                if($_POST['kodea'] == $GLOBALS['kodea'] && $eposta == $GLOBALS['epostaKod']){
+                echo '<script> alert("Kodea '. $_SESSION['kodea'] .' da") </script>';
+                echo '<script> alert("Kodea '. $_SESSION['epostaKod'] .' da") </script>';
+                if($_POST['kodea'] == $_SESSION['kodea']){
                   if($_POST['pasahitza'] == $_POST['pasahitzaB']){
-                    if(crypt($_POST['pasahitza']) != $ema['pasahitza']){
+                    if(crypt($_POST['pasahitza']) != $ema['pasahitza'] && strlen($datuak["pasahitza"] < 8)) {
                       $stmt = $dbh->prepare("UPDATE Erabiltzaileak SET pasahitza = ? WHERE eposta = ?");
-                      $pasahitza = $_POST["pasahitza"];
-                      $stmt->bindParam(1, $eposta);
-                      $stmt->bindParam(2, $pasahitza);
+                      $pasahitza = crypt($_POST['pasahitza']);
+                      $eposta = $_SESSION['epostaKod'];
+                      $stmt->bindParam(2, $eposta);
+                      $stmt->bindParam(1, $pasahitza);
                       $stmt->execute();
+
                       $dbh = null;
+                      unset($_SESSION['kodea']);
+                      unset ($_SESSION['epostaKod'] );
+
                       echo '<script> alert("Pasahitza ongi berrezarri da.") </script>';
-                      header("location: Layout.php");
+                      //header("location: Layout.php");
                     }
                     else{
                       echo '<p style="color: red"> Pasahitz berria ezin da zaharraren berdina izan.</p>';
@@ -112,7 +118,7 @@
                   echo '<p style="color: red"> Idatzitako kodea ez da zuzena.</p>';
                 }
               }
-              
+
             ?>
         </div>
     </section>

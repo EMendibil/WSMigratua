@@ -28,11 +28,8 @@
     <?php
     echo '<span><a href="Layout.php">Hasiera</a></span>';
     if (isset($_SESSION['kautotua']) && ($_SESSION['kautotua'] == "BAI") && ($_SESSION['mota'] != "3")) {
-        echo '<span><a href="QuestionFormWithImage.php">Galderak gehitu</a></span>';
         echo '<span><a href="HandlingQuizesAjax.php">Galderak gehitu AJAX</a></span>';
-        echo '<span><a href="ShowQuestionsWithImage.php">Galderak ikusi</a></span>';
-        echo '<span><a href="ShowXmlQuestions.php">Galderak (XML)</a></span>';
-        echo '<span><a href="ShowJsonQuestions.php">Galderak (JSON)</a></span>';
+
     }
     if (isset($_SESSION['kautotua']) && ($_SESSION['kautotua']) == "BAI" && ($_SESSION['mota']) == "2"){
         echo '<span><a href="IsVip.php">VIPa da?</a></span>';
